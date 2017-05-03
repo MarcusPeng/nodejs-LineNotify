@@ -1,2 +1,14 @@
-<% layout('layout') -%>
-<h1>index</h1>
+<% layout('layout') %>
+
+<link  href="/javascripts/pickerjs/picker.min.css" rel="stylesheet">
+<script src="/javascripts/pickerjs/picker.min.js"></script>
+
+<div>
+    <label for="txtMessage">Message:&nbsp;</label><input type="text" id="txtMessage" />
+    <input type="button" value="Test Send" id="btnSend" />
+    <br />
+    <label for="txtDateTime">Date:&nbsp;</label>
+    <input type="text" id="txtDateTime" class="js-super-picker">
+</div>
+<div class="js-super-picker-container"></div>
+<script src="/javascripts/index.js"></script>

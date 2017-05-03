@@ -7,4 +7,5 @@ btnLogin.onmouseout = function(){
 };
 btnLogin.onclick = function(){
     this.src = "/images/btn_login_press.png";
+    window.location = "/auth/access-line-login";
 };

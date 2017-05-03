@@ -10,6 +10,7 @@ var session = require('express-session');
 // router
 var root = require('./routes/root');
 var auth = require('./routes/auth');
+var action = require('./routes/action');
 
 var app = express();
 
@@ -46,6 +47,7 @@ app.use(function(req, res, next) {
 
 app.use('/', root);
 app.use('/auth', auth);
+app.use('/action', action);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

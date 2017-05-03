@@ -3,27 +3,28 @@ var config = require('../config');
 var notifydb = require('../repository/notifydb');
 
 const lineService = {
-    getAccessUrl: function(callback) {
-        notifydb.getApplicationInfo(function(applicationInfo) {
-            const accessUrl = config.lineApi.weblogin + 
-                "?response_type=code" +
-                "&client_id=" + applicationInfo.channelId + 
-                "&redirect_uri=" + config.lineApi.loginCallbackUrl +
-                "&state=" + config.lineApi.state;
+    getAccessUrl: function(accessType, callback) {
+        notifydb.getApplicationInfo(accessType, function(applicationInfo) {
+            let accessUrl = accessType === 'Login' ? config.lineApi.weblogin : config.lineApi.notifyAuthorize;
+            accessUrl += "?response_type=code";
+            accessUrl += "&client_id=" + applicationInfo.channelId;
+            accessUrl += "&redirect_uri=" + (accessType === 'Login' ? config.lineApi.loginCallbackUrl : config.lineApi.notifyCallbackUrl);
+            accessUrl += (accessType === 'Login' ? "" : "&scope=notify");
+            accessUrl += "&state=" + config.lineApi.state;
             callback && callback(accessUrl);
         });
     },
 
-    getAccessToken: function(code, callback) {
-        notifydb.getApplicationInfo(function(applicationInfo) {
+    getAccessToken: function(accessType, code, callback) {
+        notifydb.getApplicationInfo(accessType, function(applicationInfo) {
             let options = {
-                url: config.lineApi.accessToken,
+                url: (accessType === 'Login' ? config.lineApi.accessToken : config.lineApi.notifyToken),
                 form: { 
-                    grant_type:'authorization_code',
+                    grant_type: 'authorization_code',
                     client_id: applicationInfo.channelId,
                     client_secret: applicationInfo.channelSecret,
                     code: code,
-                    redirect_uri: config.lineApi.loginCallbackUrl
+                    redirect_uri: (accessType === 'Login' ? config.lineApi.loginCallbackUrl : config.lineApi.notifyCallbackUrl)
                 }
             };
             request.post(options, function(error, response, body) {
@@ -39,6 +40,19 @@ const lineService = {
         };
 
         request.get(options, function(error, response, body) {
+            callback && callback(error, response, body);
+        });
+    },
+
+    sendNotify: function(message, notifyToken, callback) {
+        let options = {
+            url: config.lineApi.notify,
+            headers: { 'Authorization': 'Bearer ' + notifyToken },
+            form: { 
+                message: message
+            }
+        };
+        request.post(options, function(error, response, body) {
             callback && callback(error, response, body);
         });
     }

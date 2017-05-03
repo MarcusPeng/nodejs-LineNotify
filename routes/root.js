@@ -3,7 +3,12 @@ var router = express.Router();
 
 /* GET home page */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  if (req.session.userProfile.notifyToken === '') {
+    res.redirect('/auth/notify-line-login');
+  }
+  else {
+    res.render('index');
+  }
 });
 
 /* GET login page */
