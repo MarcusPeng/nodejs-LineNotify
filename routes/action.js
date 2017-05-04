@@ -6,7 +6,8 @@ var notifydb = require('../repository/notifydb');
 
 /* send notify */
 router.post('/send', function(req, res, next) {
-    lineService.sendNotify(req.body.message, req.session.userProfile.notifyToken, function(error, response, body) {
+    req.body.notifyToken = req.session.userProfile.notifyToken;
+    lineService.sendNotify(req.body, function(error, response, body) {
         let item = common.parseJSON(body);
         res.status(200).send(item);
     });

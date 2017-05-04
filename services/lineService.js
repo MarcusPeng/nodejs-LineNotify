@@ -44,13 +44,11 @@ const lineService = {
         });
     },
 
-    sendNotify: function(message, notifyToken, callback) {
+    sendNotify: function(item, callback) {
         let options = {
             url: config.lineApi.notify,
-            headers: { 'Authorization': 'Bearer ' + notifyToken },
-            form: { 
-                message: message
-            }
+            headers: { 'Authorization': 'Bearer ' + item.notifyToken },
+            form: item
         };
         request.post(options, function(error, response, body) {
             callback && callback(error, response, body);

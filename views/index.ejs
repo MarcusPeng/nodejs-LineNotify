@@ -1,15 +1,24 @@
 <% layout('layout') %>
 
 <link  href="/javascripts/pickerjs/picker.min.css" rel="stylesheet">
+<link  href="/javascripts/tingle/tingle.min.css" rel="stylesheet">
 <script src="/javascripts/pickerjs/picker.min.js"></script>
+<script src="/javascripts/tingle/tingle.min.js"></script>
 
 <div>
     <label for="txtMessage">Message:&nbsp;</label><input type="text" id="txtMessage">
-    <label for="txtDateTime">Date:&nbsp;</label>
-    <input type="text" id="txtDateTime" class="js-super-picker">
+    <label for="txtDateTime">Date:&nbsp;</label><input type="text" id="txtDateTime" class="js-super-picker">
+    <label>Sticker:&nbsp;</label><a href="javascript:void(0);"><img width="70" height="70" src="/images/lineSticker/0.png" alt="sticker" id="imgSelectSticker" selectedSticker="0.png" ></a>
+    <label for="ddlFrequency">Frequency:&nbsp;</label>
+    <select id="ddlFrequency">
+        <option value="O">Once</option>
+        <option value="D">Day</option>
+        <option value="M">Month</option>
+        <option value="Y">Year</option>
+    </select>
     <br>
     <input type="button" value="Test Send" id="btnSend">
-    <input type="button" id="btnAdd" value="Add">
+    <input type="button" value="Add" id="btnAdd">
     <input type="button" value="Log out" id="btnLogout">
     <hr>
     <table>
@@ -22,7 +31,6 @@
                 <td>ScheduleDate</td>
                 <td>ScheduleTime</td>
                 <td>Frequency</td>
-                <!--<td>IsEnable</td>-->
                 <td>Function</td>
             </tr>
         </thead>
@@ -36,14 +44,17 @@
                 <td><%= item.scheduleTime === null ? '' : item.scheduleTime.toLocaleDateString() %></td>
                 <td><%= item.scheduleTime === null ? '' : item.scheduleTime.toLocaleTimeString() %></td>
                 <td><%= item.frequency %></td>
-                <!--<td><%= item.isEnable %></td>-->
-                <td>
-                    <input type="button" value="Delete" onclick="deleteSetting(<%=item.notifySettingId%>);" />
-                </td>
+                <td><input type="button" value="Delete" onclick="deleteSetting(<%=item.notifySettingId%>);" /></td>
             </tr>
             <% }); %>
         </tbody>
     </table>
 </div>
+
 <div class="js-super-picker-container"></div>
+<div id="divSticker" style="display:none;">
+    <% sticker.forEach(function(item, index){ %>
+    <img src="<%= '/images/lineSticker/' + item %>" alt="<%= item %>" onclick="selectSticker(<%='\''+item+'\''%>);" width="70" height="70" >
+    <% }); %>
+</div>
 <script src="/javascripts/index.js"></script>

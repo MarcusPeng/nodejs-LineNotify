@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var notidydb = require('../repository/notifydb');
+var fs = require('fs');
 
 /* GET home page */
 router.get('/', function(req, res, next) {
@@ -9,7 +10,15 @@ router.get('/', function(req, res, next) {
   }
   else {
     notidydb.getNotifySetting(req.session.userProfile.userId, function(rows) {
-      res.render('index', {rows: rows});
+      fs.readdir(__dirname + '/../public/images/lineSticker',function(err, files) {
+        let sticker = [];
+        files.forEach(function(item, index){
+          if (!item.startsWith('.')) {
+            sticker.push(item);
+          }
+        });
+        res.render('index', {rows: rows, sticker: sticker});
+      })
     });
   }
 });
