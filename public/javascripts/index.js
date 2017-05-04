@@ -21,6 +21,10 @@ document.getElementById('btnLogout').onclick = function() {
 }
 
 document.getElementById('btnAdd').onclick = function() {
+    if (document.getElementById('txtDateTime').value === '' || document.getElementById('txtMessage').value === '') {
+        alert('Please input message and select schedule datetime.');
+        return;
+    }
     fetch('/action/add-setting', {
         method: 'post',
         body: JSON.stringify({ 
