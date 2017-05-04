@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var notidydb = require('../repository/notifydb');
 
 /* GET home page */
 router.get('/', function(req, res, next) {
@@ -7,7 +8,9 @@ router.get('/', function(req, res, next) {
     res.redirect('/auth/notify-line-login');
   }
   else {
-    res.render('index');
+    notidydb.getNotifySetting(req.session.userProfile.userId, function(rows) {
+      res.render('index', {rows: rows});
+    });
   }
 });
 

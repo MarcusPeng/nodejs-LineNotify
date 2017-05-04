@@ -4,11 +4,46 @@
 <script src="/javascripts/pickerjs/picker.min.js"></script>
 
 <div>
-    <label for="txtMessage">Message:&nbsp;</label><input type="text" id="txtMessage" />
-    <input type="button" value="Test Send" id="btnSend" />
-    <br />
+    <label for="txtMessage">Message:&nbsp;</label><input type="text" id="txtMessage">
     <label for="txtDateTime">Date:&nbsp;</label>
     <input type="text" id="txtDateTime" class="js-super-picker">
+    <br>
+    <input type="button" value="Test Send" id="btnSend">
+    <input type="button" id="btnAdd" value="Add">
+    <input type="button" value="Log out" id="btnLogout">
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <td>Seq</td>
+                <td>Message</td>
+                <td>StickerPackageId</td>
+                <td>StickerId</td>
+                <td>ScheduleDate</td>
+                <td>ScheduleTime</td>
+                <td>Frequency</td>
+                <!--<td>IsEnable</td>-->
+                <td>Function</td>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <% rows.forEach(function(item, index){ %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td><%= item.message %></td>
+                <td><%= item.stickerPackageId %></td>
+                <td><%= item.stickerId %></td>
+                <td><%= item.scheduleTime === null ? '' : item.scheduleTime.toLocaleDateString() %></td>
+                <td><%= item.scheduleTime === null ? '' : item.scheduleTime.toLocaleTimeString() %></td>
+                <td><%= item.frequency %></td>
+                <!--<td><%= item.isEnable %></td>-->
+                <td>
+                    <input type="button" value="Delete" onclick="deleteSetting(<%=item.notifySettingId%>);" />
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
 </div>
 <div class="js-super-picker-container"></div>
 <script src="/javascripts/index.js"></script>

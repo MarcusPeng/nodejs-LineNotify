@@ -42,6 +42,31 @@ const notifydb = {
             if (err) throw err;
             callback && callback(rows[0]);
         });
+    },
+
+    insertNotifySetting: function(item, callback) {
+        const command = "CALL `notifydb`.`sp_insertNotifySetting`(?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        const parameters = [item.userId, item.message, item.imageThumbnail, item.imageFullsize, item.imageFile, item.stickerPackageId, item.stickerId, item.scheduleTime, item.frequency];
+        pool.query(command, parameters, function(err, rows, fields) {
+            if (err) throw err;
+            callback && callback();
+        });
+    },
+
+    deleteNotifySetting: function(item, callback) {
+        const command = "DELETE FROM notifydb.notifySetting WHERE userId = ? AND notifySettingId = ?;";
+        const parameters = [item.userId, item.notifySettingId];
+        pool.query(command, parameters, function(err, rows, fields) {
+            if (err) throw err;
+            callback && callback();
+        });
+    },
+
+    getNotifySetting: function(userId, callback) {
+        pool.query("SELECT * FROM notifySetting where userId = ?;", [userId], function(err, rows, fields) {
+            if (err) throw err;
+            callback && callback(rows);
+        });
     }
 };
 
